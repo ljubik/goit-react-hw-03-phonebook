@@ -57,11 +57,26 @@ class App extends Component {
     });
   };
 
+  componentDidMount() {
+    const contactLocalStorege = JSON.parse(localStorage.getItem("contacts"));
+    if (contactLocalStorege) {
+      this.setState(() => ({ contacts: [...contactLocalStorege] }));
+      return;
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { contacts } = this.state;
+    if (contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const { addContact, getValue, getList, toDelete } = this;
     return (
       <div className="App">
-        <Main title="Телефонна книжка v.1.01"/>
+        <Main title="Телефонна книжка v.1.2"/>
         <ContactForm addContact={addContact} getValue={getValue} />
         <p className="pApp">Пошук контактів </p>
         <Filter filterContact={getValue} />
